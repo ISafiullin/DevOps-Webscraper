@@ -79,7 +79,12 @@ class Program
         driver.Navigate().GoToUrl("https://www.youtube.com/");
 
         // Accept cookies and close pop-up
-        AcceptCookies(driver);
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+        var acceptButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("button[aria-label='Akkoord gaan met het gebruik van cookies en andere gegevens voor de beschreven doeleinden']")));
+
+        acceptButton.Click();
+
+        Thread.Sleep(8000);
 
         // Fill in user input in search bar youtube
         var searchBox = driver.FindElement(By.Name("search_query"));
@@ -101,8 +106,8 @@ class Program
             var video = searchResults[i];
             var title = video.FindElement(By.Id("video-title")).Text;
             var link = video.FindElement(By.Id("video-title")).GetAttribute("href");
-            var uploader = video.FindElement(By.CssSelector("#byline a")).Text;
-            var views = video.FindElement(By.CssSelector("#metadata-line span:nth-child(1)")).Text;
+            var uploader = video.FindElement(By.Id("channel-name")).Text;
+            var views = video.FindElement(By.CssSelector("#metadata-line ytd-badge-supported-renderer span:nth-child(1)")).Text;
 
             var vidInfo = new Dictionary<string, string>
         {
