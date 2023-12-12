@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "dgSpecHash": "aaQ3I8GjHh05qxUPjI6M6yMYrLhNpGDdOMFSLTUgn1x2/3Zc6czyl5xzX5J6ALciFBCvWBBSMeD9h2E3tdGX1w==",
+  "success": true,
+  "projectFilePath": "D:\\school 23-24\\devops\\DevOps-Webscraper\\DevOps-Webscraper\\DevOps-Webscraper.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Ilias Safiullin\\.nuget\\packages\\dotnetseleniumextras.waithelpers\\3.11.0\\dotnetseleniumextras.waithelpers.3.11.0.nupkg.sha512",
+    "C:\\Users\\Ilias Safiullin\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\Ilias Safiullin\\.nuget\\packages\\selenium.support\\4.16.2\\selenium.support.4.16.2.nupkg.sha512",
+    "C:\\Users\\Ilias Safiullin\\.nuget\\packages\\selenium.webdriver\\4.16.2\\selenium.webdriver.4.16.2.nupkg.sha512",
+    "C:\\Users\\Ilias Safiullin\\.nuget\\packages\\selenium.webdriver.chromedriver\\120.0.6099.7100\\selenium.webdriver.chromedriver.120.0.6099.7100.nupkg.sha512",
+    "C:\\Users\\Ilias Safiullin\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\Ilias Safiullin\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\Ilias Safiullin\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\Ilias Safiullin\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.25\\microsoft.netcore.app.host.win-x64.6.0.25.nupkg.sha512"
+  ],
+  "logs": []
+}
