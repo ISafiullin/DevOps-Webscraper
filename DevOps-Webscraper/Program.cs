@@ -6,6 +6,8 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Net.WebRequestMethods;
 
 class Program
 {
@@ -106,8 +108,8 @@ class Program
             var video = searchResults[i];
             var title = video.FindElement(By.Id("video-title")).Text;
             var link = video.FindElement(By.Id("video-title")).GetAttribute("href");
-            var uploader = video.FindElement(By.Id("channel-name")).Text;
-            var views = video.FindElement(By.CssSelector("#metadata-line ytd-badge-supported-renderer span:nth-child(1)")).Text;
+            var uploader = video.FindElement(By.CssSelector("yt-formatted-string #text")).Text;
+            var views = video.FindElement(By.CssSelector("div#metadata-line > span")).Text;
 
             var vidInfo = new Dictionary<string, string>
         {
@@ -125,22 +127,40 @@ class Program
 
     static List<Dictionary<string, string>> ScrapeICTJob(IWebDriver driver, string searchTerm)
     {
-        // Your ICTJob scraping
+        // ICTJob scraping
         // Navigate to ICTJob, search for jobs, and retrieve data
+        driver.Navigate().GoToUrl("https://www.ictjob.be/");
+
+        // Navigate and fill in the search box
+        var searchBox = driver.FindElement(By.Id("smart-search-skill-input"));
+        searchBox.SendKeys(searchTerm);
+
+        // Click on search button
+        var searchButton = driver.FindElement(By.Id("main-search-button"));
+        searchButton.Click();
 
         // Sample data
-        var ictJobData = new List<Dictionary<string, string>>
+        var ictJobData = new List<Dictionary<string, string>>();
+
+        var searchResults = driver.FindElements(By.CssSelector("ytd-video-renderer"));
+        for (int i = 0; i < Math.Min(5, searchResults.Count); i++)
         {
-            new Dictionary<string, string>
-            {
-                {"Title", "Sample Job 1"},
-                {"Company", "Sample Company 1"},
-                {"Location", "Sample Location 1"},
-                {"Keywords", "Sample Keywords 1"},
-                {"Link", "https://www.ictjob.be/en/job/sample-job-1/12345"}
-            },
-            // Add data for other jobs
+            var video = searchResults[i];
+            var title = video.FindElement(By.Id("video-title")).Text;
+            var link = video.FindElement(By.Id("video-title")).GetAttribute("href");
+            var uploader = video.FindElement(By.CssSelector("yt-formatted-string #text")).Text;
+            var views = video.FindElement(By.CssSelector("div#metadata-line > span")).Text;
+
+            var vidInfo = new Dictionary<string, string>
+        {
+            {"Link", link},
+            {"Title", title},
+            {"Uploader", uploader},
+            {"Views", views}
         };
+
+            ictJobData.Add(vidInfo);
+        }
 
         return ictJobData;
     }
@@ -186,7 +206,7 @@ class Program
     static void WriteToJson(string fileName, List<Dictionary<string, string>> data)
     {
         var json = JsonConvert.SerializeObject(data, Formatting.Indented);
-        File.WriteAllText(fileName, json);
+        System.IO.File.WriteAllText(fileName, json);
     }
 
 }
