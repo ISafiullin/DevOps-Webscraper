@@ -108,7 +108,7 @@ class Program
             var video = searchResults[i];
             var title = video.FindElement(By.Id("video-title")).Text;
             var link = video.FindElement(By.Id("video-title")).GetAttribute("href");
-            var uploader = video.FindElement(By.CssSelector("yt-formatted-string #text")).Text;
+            var uploader = video.FindElement(By.CssSelector("#channel-name.ytd-video-renderer")).Text;
             var views = video.FindElement(By.CssSelector("div#metadata-line > span")).Text;
 
             var vidInfo = new Dictionary<string, string>
@@ -132,35 +132,46 @@ class Program
         driver.Navigate().GoToUrl("https://www.ictjob.be/");
 
         // Navigate and fill in the search box
-        var searchBox = driver.FindElement(By.Id("smart-search-skill-input"));
+        var searchBox = driver.FindElement(By.Id("keywords-input"));
         searchBox.SendKeys(searchTerm);
 
         // Click on search button
         var searchButton = driver.FindElement(By.Id("main-search-button"));
         searchButton.Click();
 
+        Thread.Sleep(4000);
+
         // Sample data
         var ictJobData = new List<Dictionary<string, string>>();
 
-        var searchResults = driver.FindElements(By.CssSelector("ytd-video-renderer"));
-        for (int i = 0; i < Math.Min(5, searchResults.Count); i++)
-        {
-            var video = searchResults[i];
-            var title = video.FindElement(By.Id("video-title")).Text;
-            var link = video.FindElement(By.Id("video-title")).GetAttribute("href");
-            var uploader = video.FindElement(By.CssSelector("yt-formatted-string #text")).Text;
-            var views = video.FindElement(By.CssSelector("div#metadata-line > span")).Text;
+        var searchResults = driver.FindElements(By.ClassName("search-result-list"));
 
-            var vidInfo = new Dictionary<string, string>
+        foreach (var searchResult in searchResults)
         {
-            {"Link", link},
-            {"Title", title},
-            {"Uploader", uploader},
-            {"Views", views}
-        };
+            var jobInfoElements = searchResult.FindElements(By.CssSelector("li.search-item span.job-info")).Take(5);
 
-            ictJobData.Add(vidInfo);
+            foreach (var jobInfoElement in jobInfoElements)
+            {
+                var title = jobInfoElement.FindElement(By.CssSelector("a.job-title")).Text;
+                var employer = jobInfoElement.FindElement(By.CssSelector("span.job-company")).Text;
+                var location = jobInfoElement.FindElement(By.CssSelector("span.job-location")).Text;
+                var keywords = jobInfoElement.FindElement(By.CssSelector("span.job-keywords")).Text;
+                var link = jobInfoElement.FindElement(By.CssSelector("a.job-title")).GetAttribute("href");
+
+                var jobInfo = new Dictionary<string, string>
+                {
+                    {"Title", title},
+                    {"Employer", employer},
+                    {"Location", location},
+                    {"Keywords", keywords},
+                    {"Link", link}
+                };
+
+                // Add the job information
+                ictJobData.Add(jobInfo);
+            }
         }
+
 
         return ictJobData;
     }
