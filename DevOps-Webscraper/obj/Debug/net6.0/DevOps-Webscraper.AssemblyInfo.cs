@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DevOps-Webscraper")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7e6f583e360ea10e4884e9edf645efd0abda0fbc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+94078bdfedf8e3edf75fd0df39951aad494b98cc")]
 [assembly: System.Reflection.AssemblyProductAttribute("DevOps-Webscraper")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DevOps-Webscraper")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -35,11 +35,10 @@ class Program
             WriteToJson("ICTJobData.json", ictJobData);
 
             // User-selected site scraping
-            var userSiteUrl = GetUserInput("Enter the URL of the user-selected site:");
-            var userSiteSearchTerm = GetUserInput("Enter the search term for the user-selected site:");
-            var userSiteData = ScrapeUserSite(driver, userSiteUrl, userSiteSearchTerm);
-            WriteToCSV("UserSiteData.csv", userSiteData);
-            WriteToJson("UserSiteData.json", userSiteData);
+            var imdbSearchTerm = GetUserInput("Enter a IMDb search term:");
+            var imdbData = ScrapeImdb(driver, imdbSearchTerm);
+            WriteToCSV("ImbdData.csv", imdbData);
+            WriteToJson("ImbdData.json", imdbData);
         }
         finally
         {
@@ -52,25 +51,6 @@ class Program
     {
         Console.Write(prompt + " ");
         return Console.ReadLine();
-    }
-
-    static void AcceptCookies(IWebDriver driver)
-    {
-        try
-        {
-            // Wait for the cookie pop-up to appear (you may need to adjust the time based on your internet speed)
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
-            wait.Until(ExpectedConditions.ElementExists(By.Id("cookie-banner")));
-
-            // Find the "Accept All Cookies" button and click it
-            var acceptButton = driver.FindElement(By.CssSelector("#cookie-banner #button"));
-            acceptButton.Click();
-        }
-        catch (Exception ex)
-        {
-            // Log or handle the exception as needed
-            Console.WriteLine($"Error handling cookies: {ex.Message}");
-        }
     }
 
     static List<Dictionary<string, string>> ScrapeYouTube(IWebDriver driver, string searchTerm)
@@ -144,11 +124,11 @@ class Program
         // Sample data
         var ictJobData = new List<Dictionary<string, string>>();
 
-        var searchResults = driver.FindElements(By.ClassName("search-result-list"));
+        var jobs = driver.FindElements(By.ClassName("search-result-list"));
 
-        foreach (var searchResult in searchResults)
+        foreach (var job in jobs)
         {
-            var jobInfoElements = searchResult.FindElements(By.CssSelector("li.search-item span.job-info")).Take(5);
+            var jobInfoElements = job.FindElements(By.CssSelector("li.search-item span.job-info")).Take(5);
 
             foreach (var jobInfoElement in jobInfoElements)
             {
@@ -176,25 +156,54 @@ class Program
         return ictJobData;
     }
 
-    static List<Dictionary<string, string>> ScrapeUserSite(IWebDriver driver, string siteUrl, string searchTerm)
+    static List<Dictionary<string, string>> ScrapeImdb(IWebDriver driver, string searchTerm)
     {
-        //user-selected site scraping
+        // IMDb scraping
 
-        // Navigate to the user-selected site, perform the search, and retrieve data
+        // Navigate to IMDb
+        driver.Navigate().GoToUrl("https://www.imdb.com/");
 
-        // Sample data
-        var userSiteData = new List<Dictionary<string, string>>
+        // Accept cookies
+        var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
+        var acceptButton = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector("button[data-testid='accept-button']")));
+
+        acceptButton.Click();
+
+        // Search
+        // Fill in user input in search bar youtube
+        var searchBox = driver.FindElement(By.Name("q"));
+        searchBox.SendKeys(searchTerm);
+
+        // Click on search button
+        var searchButton = driver.FindElement(By.Id("suggestion-search-button"));
+        searchButton.Click();
+
+        var imdbData = new List<Dictionary<string, string>>();
+
+        var movies = driver.FindElements(By.XPath("//section[@data-testid='find-results-section-title']"));
+
+        foreach (var movie in movies)
         {
-            new Dictionary<string, string>
-            {
-                {"CustomField1", "Sample Data 1"},
-                {"CustomField2", "Sample Data 2"},
-                {"Link", "https://www.example.com/sample-page"}
-            },
-            // Add data for other entries
-        };
+           var movieElements = movie.FindElements(By.CssSelector("div.ipc-metadata-list-summary-item__tc"));
 
-        return userSiteData;
+            foreach (var movieElement in movieElements)
+            {
+                var title = movieElement.FindElement(By.CssSelector("a")).Text;
+                var link = movieElement.FindElement(By.CssSelector("a")).GetAttribute("href");
+                var year = movieElement.FindElement(By.CssSelector("ul.ipc-metadata-list-summary-item__tl")).Text;
+
+                var movieInfo = new Dictionary<string, string>
+                {
+                    {"Title", title},
+                    {"Year", year},
+                    {"Link", link}
+                };
+
+                imdbData.Add(movieInfo);
+            }
+            
+        }
+        return imdbData;
     }
 
     static void WriteToCSV(string fileName, List<Dictionary<string, string>> data)

@@ -1,5 +1,12 @@
 [
   {
+    "Title": "IT Operationeel Beheerder",
+    "Employer": "Argenta",
+    "Location": "Antwerpen",
+    "Keywords": "Agile, SAFe, DevOps",
+    "Link": "https://www.ictjob.be/nl/vacature/argenta-it-operationeel-beheerder/4-231253"
+  },
+  {
     "Title": "Senior OpenShift Engineer",
     "Employer": "Isabel Group",
     "Location": "Brussel",
@@ -26,12 +33,5 @@
     "Location": "Leuven",
     "Keywords": "AWS; Kubernetes; CI/CD; Leadership",
     "Link": "https://www.ictjob.be/nl/vacature/devops-lead-engineer/1-277013"
-  },
-  {
-    "Title": "Business Analyst - Azure DevOps / MS Dynamics / JIRA / Agile - EU Agency",
-    "Employer": "NTT Data",
-    "Location": "Amsterdam Buitenveldert",
-    "Keywords": "Business Analysis DevOps Agile JIRA",
-    "Link": "https://www.ictjob.be/nl/vacature/ntt-data-business-analyst-azure-devops-ms-dynamics-jira-agile-eu-agency/1-277009"
   }
 ]
