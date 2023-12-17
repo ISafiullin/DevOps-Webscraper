@@ -191,11 +191,13 @@ class Program
                 var title = movieElement.FindElement(By.CssSelector("a")).Text;
                 var link = movieElement.FindElement(By.CssSelector("a")).GetAttribute("href");
                 var year = movieElement.FindElement(By.CssSelector("ul.ipc-metadata-list-summary-item__tl")).Text;
+                var actors = movieElement.FindElement(By.CssSelector("ul.ipc-metadata-list-summary-item__stl")).Text;
 
                 var movieInfo = new Dictionary<string, string>
                 {
                     {"Title", title},
                     {"Year", year},
+                    {"Actors", actors },
                     {"Link", link}
                 };
 
